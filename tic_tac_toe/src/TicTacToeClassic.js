@@ -11,43 +11,54 @@ if (!document.getElementById(fontLinkId)) {
   document.head.appendChild(link);
 }
 
-// Add retro style background pattern to body if not present
+/*
+ * Add retro red arcade-style background pattern to body if not already present
+ * Uses bold red stripes and a deep cherry field to evoke 90s arcade cabinets, but keeps pixel/stripe feel.
+ */
 const retroBgId = 'retro-ttt-bg-style';
 if (!document.getElementById(retroBgId)) {
   const retroBgStyle = document.createElement('style');
   retroBgStyle.id = retroBgId;
   retroBgStyle.innerText = `
     body {
-      /* Diagonal stripes: PNG pixel pattern, fallback to dark navy */
-      background-color: #0a0033;
+      /* Arcade Red Diagonal stripes. #BD002C = powerful red, #85001C = deep red-black, #FF2163 & #FF757B = fuchsia accents */
+      background-color: #85001c !important;
       background-image: repeating-linear-gradient(
         135deg,
-        #181d29 0px,
-        #181d29 24px,
-        #1adcfc 24px,
-        #1adcfc 32px
+        #bd002c 0px,
+        #bd002c 22px,
+        #ff2163 22px,
+        #ff2163 30px,
+        #85001c 30px,
+        #85001c 54px,
+        #ff757b 54px,
+        #ff757b 62px
       );
+      background-size: 62px 62px;
     }
   `;
   document.head.appendChild(retroBgStyle);
 }
 
-// Retro color palette
+/*
+ * Retro 90's arcade red palette: update for strong red theme with hot pink and neon blue/teal accents.
+ * Background and major panels lean into red, bold pink & yellow for light sources, cyan/blue for board elements.
+ */
 const retroVars = {
-  '--retro-bg': '#0a0033',
-  '--retro-panel': '#0d1040',
-  '--retro-pink': '#ff4bf5',
-  '--retro-cyan': '#41fff2',
-  '--retro-blue': '#34adff',
-  '--retro-green': '#2fff4b',
-  '--retro-yellow': '#ffe94b',
-  '--retro-x': '#ffe94b',
-  '--retro-o': '#41fff2',
-  '--retro-button-bg': '#181d29',
-  '--retro-button-hover': '#ff4bf5',
-  '--retro-border': '#41fff2',
-  '--retro-shadow': '#ff4bf571',
-  '--retro-cell-border': '#00ffe9',
+  '--retro-bg': '#85001c',              // deep red-maroon as background
+  '--retro-panel': '#bd002c',           // bold red for main container/panels
+  '--retro-pink': '#ff4bf5',            // magenta-pink accent (neon light)
+  '--retro-cyan': '#ffd319',            // yellow-glow border + text highlights
+  '--retro-blue': '#34adff',            // neon blue for older highlights
+  '--retro-green': '#2fff4b',           // keep for victory accents (optional)
+  '--retro-yellow': '#ffe94b',          // neon yellow for draw/borders
+  '--retro-x': '#ffe94b',               // keep X yellow for pop
+  '--retro-o': '#ff4bf5',               // O as neon magenta (pop on red/black)
+  '--retro-button-bg': '#ff2163',       // arcade red/pink for button background
+  '--retro-button-hover': '#ffd319',    // button hover: yellow for punch
+  '--retro-border': '#ffe94b',          // All borders go electric yellow/gold
+  '--retro-shadow': '#bd002cb1',        // softer redto-pink shadow
+  '--retro-cell-border': '#ffd319',     // board: yellow (strong contrast)
   '--retro-font': "'Press Start 2P', 'Courier New', monospace"
 };
 // Inject retro CSS variables for use in react styles
@@ -218,27 +229,28 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    background: 'var(--retro-panel)',
-    border: '6px solid var(--retro-cyan)',
-    borderRadius: 12,
+    background: 'var(--retro-panel)', // now bold red (#bd002c)
+    border: '6px solid var(--retro-yellow)', // strong gold/yellow accent
+    borderRadius: 15,
     margin: '48px auto',
     boxShadow:
-      '0 0 32px 6px var(--retro-pink), 0 0 0 8px var(--retro-blue) inset, 0 2px 12px 0px #01031d99',
+      '0 0 38px 8px #ff216380, 0 0 0 12px #ffe94b88 inset, 0 2px 14px 0px #33010c99',
     padding: '46px 30px 24px 30px',
     maxWidth: 370,
     color: '#fff',
     minHeight: 540,
     fontFamily: "var(--retro-font)",
     position: 'relative',
+    outline: '3px solid #ff2163', // extra neon red glow
   },
   title: {
-    fontSize: '2.1rem',
+    fontSize: '2.2rem',
     marginBottom: 26,
     marginTop: 0,
-    color: 'var(--retro-pink)',
+    color: 'var(--retro-yellow)',
     letterSpacing: 2,
     textShadow:
-      '0 2px 0 var(--retro-yellow), 1px 2px 8px var(--retro-cyan), 0 0 20px #3161ff99',
+      '0 2px 0 #ff2163, 1px 2px 8px #ffe94bdd, 0 0 26px #bd002cb4',
     fontFamily: "var(--retro-font)",
     fontWeight: 'bold',
     textAlign: 'center'
@@ -253,11 +265,11 @@ const styles = {
     marginBottom: 34,
     marginTop: 4,
     background:
-      "radial-gradient(circle at 50% 170%, #1adcfc16 0%, #0a0033 80%)",
-    border: '5px solid var(--retro-border)',
+      "radial-gradient(circle at 60% 170%, #ffd31919 0%, #bd002c 88%)", // light yellow glow into red
+    border: '5px solid var(--retro-border)', // #ffe94b
     borderRadius: 8,
     boxShadow:
-      '0 2px 22px 1px var(--retro-cyan), 0 0 12px 0px var(--retro-pink) inset',
+      '0 2px 18px 1px #ffd319b1, 0 0 18px 0px #ff2163aa inset',
     padding: 10,
   },
   cell: {
@@ -266,15 +278,15 @@ const styles = {
     fontSize: '1.4rem',
     color: 'var(--retro-blue)',
     background:
-      "linear-gradient(145deg, #181d29 80%, #1adcfc44 100%)",
-    border: '4px solid var(--retro-cell-border)',
+      "linear-gradient(135deg, #ff757b 72%, #ff216344 100%)", // pink fade, visible on red
+    border: '4px solid var(--retro-cell-border)', // yellow border
     borderRadius: 3,
     cursor: 'pointer',
     transition: 'background 0.15s, box-shadow 0.18s, filter 0.09s, color 0.13s',
     fontWeight: 700,
     outline: 'none',
     boxShadow:
-      '0 2px 8px var(--retro-shadow), 0 0 0 2px #0a0033 inset',
+      '0 2px 8px var(--retro-shadow), 0 0 0 2px #bd002c inset',
     userSelect: 'none',
     display: 'flex',
     alignItems: 'center',
@@ -282,44 +294,44 @@ const styles = {
     lineHeight: 1,
     fontFamily: "var(--retro-font)",
     textShadow:
-      "0 0px 4px #58fff988, 0 1px 12px #fff4bf30",
+      "0 0px 4px #ffd31988, 0 1px 12px #ffe94b40",
     position: 'relative',
     zIndex: 6,
   },
   cellX: {
-    color: 'var(--retro-x)',
+    color: 'var(--retro-x)', // yellow
     textShadow:
-      "0 2px 8px #fff4bf99, 0 0px 18px #ffe94bd4, 1px 1px 0px #f400ff",
-    filter: "drop-shadow(0 1px 2px #fff4bf70)",
-    background: "linear-gradient(80deg, #1f161d 80%, #ffe94b40 100%)",
+      "0 2px 8px #ffe94bbb, 0 0px 18px #ffe94bd4, 1px 1px 0px #ff2163b0",
+    filter: "drop-shadow(0 1px 2px #ffe94b70)",
+    background: "linear-gradient(80deg, #450014 80%, #ffe94b40 100%)", // soft red base
     border: '4px solid var(--retro-x)',
   },
   cellO: {
-    color: 'var(--retro-o)',
+    color: 'var(--retro-o)', // neon magenta for O, pops on red
     textShadow:
-      "0 2px 9px #41fff299, 0 0px 16px #34adffb4, 1px 1px 0px #0ff4ff",
-    filter: "drop-shadow(0 1px 2px #00fff1)",
-    background: "linear-gradient(245deg, #181d29 65%, #41fff2b7 100%)",
+      "0 2px 10px #ff4bf599, 0 0px 18px #bd002cb4, 1px 1px 0px #ffe94b",
+    filter: "drop-shadow(0 2px 7px #ff4bf570)",
+    background: "linear-gradient(245deg, #bd002c 65%, #ff4bf580 100%)",
     border: '4px solid var(--retro-o)',
   },
   status: {
     minHeight: 38,
-    fontSize: '0.91rem',
+    fontSize: '0.99rem',
     fontWeight: 600,
     marginBottom: 20,
     color: '#fff',
     textAlign: 'center',
-    letterSpacing: '0.7px',
+    letterSpacing: '1px',
     fontFamily: "var(--retro-font)",
-    textShadow: '0 2px 8px #ffe94b99, 0 0px 6px #41fff29b',
+    textShadow: '0 2px 8px #ffe94bbb, 0 0px 6px #ff2163c9',
     border: 0,
     padding: 2,
   },
   restartBtn: {
     background:
-      'linear-gradient(90deg, var(--retro-yellow) 8%, var(--retro-pink) 90%)',
-    color: '#080228',
-    border: '3px solid var(--retro-cyan)',
+      'linear-gradient(92deg, var(--retro-pink) 7%, var(--retro-yellow) 93%)',
+    color: '#340013',
+    border: '3px solid var(--retro-border)', // yellow
     borderRadius: 8,
     padding: '11px 34px',
     fontSize: '1rem',
@@ -329,21 +341,21 @@ const styles = {
     letterSpacing: 2,
     transition: 'background 0.18s, color 0.15s, border 0.15s, filter 0.12s',
     boxShadow:
-      '0 2px 12px #ff4bf581, 0 0 22px #ffe94b61 inset',
+      '0 2px 12px #ff216388, 0 0 22px #ffe94b71 inset',
     outline: 'none',
     fontFamily: "var(--retro-font)",
-    textShadow: "1px 1px 2px #fff4bfbb",
+    textShadow: "1px 1px 2px #ffe94bbb",
     marginBottom: 10,
   },
   credit: {
     marginTop: 28,
-    color: 'var(--retro-pink)',
+    color: '#ffe94b', // yellow accent
     fontFamily: "var(--retro-font)",
     fontSize: '0.65rem',
-    letterSpacing: '.12em',
+    letterSpacing: '.13em',
     textAlign: 'center',
-    textShadow: '0 1px 10px #ff4bf5a6, 0 2px 8px #ffe94b99',
-    opacity: 0.9
+    textShadow: '0 1px 10px #ff21639c, 0 2px 8px #ffe94b88',
+    opacity: 0.97
   }
 };
 
